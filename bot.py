@@ -4,7 +4,7 @@ Author: Reeves Farrell
 
 Description:
 - Discord bot to give a random video game recommendation
-- Utilizes the Discord API and RAWG.io API for the games
+- Utilizes the Discord API and RAWG.io database API
 - Goal was to better understand API's
 """
 
