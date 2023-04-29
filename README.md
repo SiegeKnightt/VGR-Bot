@@ -1,5 +1,5 @@
 # VGR-Bot
-This is a Discord bot that gives a random video game recommendation by using the RAWG.io API database.
+This is a Discord bot that gives a random video game recommendation by using the RAWG.io database API.
 The goal of this project was to better understand how to implement API's and create a fun game suggester for my friends.
 
 ## Deployment Instructions
