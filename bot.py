@@ -21,7 +21,7 @@ load_dotenv()
 # Environment tokens
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
-RAWG_API_TOKEN = os.getenv('RAWG_API_TOKEN')
+STEAM_API_TOKEN = os.getenv('STEAM_API_TOKEN')
 
 # Gets intents for messages and member access
 intents = discord.Intents.default()
@@ -56,42 +56,68 @@ async def on_member_join(member):
 async def assist(ctx):
     await ctx.channel.send(f'Use !game for a random game recommendation!')
 
-# Command to give a random game recommendation
-# Uses the RAWG.io API to gather the game data
-@bot.command(name='game')
-async def game(ctx):
-    headers = {
-        'User-Agent': 'Discord Bot'
-    }
+# Command to compare steam libraries
+# !compare steam_id_1 steam_id_2
+@bot.command()
+async def compare(ctx, profile_name_1, profile_name_2):
+    # Steam API endpoint for retrieving Steam ID from profile name
+    url = f"https://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={STEAM_API_TOKEN}&vanityurl={profile_name_1}"
+    url_2 = f"https://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={STEAM_API_TOKEN}&vanityurl={profile_name_2}"
 
-    params = {
-        'key': RAWG_API_TOKEN,
-        'page_size': 100,
-        'sort-by': 'rating',
-        'platforms': '18,1'
-    }
+    # Sends GET requests to Steam API to retrieve Steam ID for each profile name
+    response_1 = requests.get(url)
+    response_2 = requests.get(url_2)
 
-    response = requests.get('https://api.rawg.io/api/games', headers = headers, params = params).json()
+    # Checks if requests were successful
+    if response_1.status_code != 200:
+        await ctx.send("Error: Failed to retrieve Steam IDs for user one.")
+        return
+    elif response_2.status_code != 200:
+        await ctx.send("Error: Failed to retrieve Steam IDs for user two.")
+        return
 
-    game_list = response['results']
+    # Parses response JSON to retrieve Steam ID for each profile name
+    steam_id_1 = response_1.json().get("response", {}).get("steamid")
+    steam_id_2 = response_2.json().get("response", {}).get("steamid")
 
-    game = random.choice(game_list)
+    # Steam API endpoint for retrieving list of games in a user's library
+    url = f"https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={STEAM_API_TOKEN}&steamid={steam_id_1}&include_appinfo=1&include_played_free_games=1&format=json"
+    url_2 = f"https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={STEAM_API_TOKEN}&steamid={steam_id_2}&include_appinfo=1&include_played_free_games=1&format=json"
 
-    platforms = game['platforms']
+    # Sends GET requests to Steam API to retrieve list of games for each user
+    response_1 = requests.get(url)
+    response_2 = requests.get(url_2)
 
-    # Creates list of platforms with their corresponding ids
-    platform_numbers = [platform['platform']['id'] for platform in platforms]
+    # Checks if requests were successful
+    if response_1.status_code != 200:
+        await ctx.send("Error: Failed to retrieve game libraries for user one.")
+        return
+    elif response_2.status_code != 200:
+        await ctx.send("Error: Failed to retrieve game libraries for user two.")
+        return
 
-    # Chooses a random avaliable platform
-    random_platform_number = random.choice(platform_numbers)
+    # Parses response JSON to retrieve list of games for each user
+    games_1 = response_1.json().get("response", {}).get("games", [])
+    games_2 = response_2.json().get("response", {}).get("games", [])
 
-    # Finds a match with the platform and the game
-    platform_name = next((platform['platform']['name'] for platform in platforms if platform['platform']['id'] == random_platform_number), None)
+    # Finds common games in both users' libraries
+    common_games = set([game["name"] for game in games_1]) & set([game["name"] for game in games_2])
 
-    # Prints the game and platform or states a platform was not found
-    if platform_name:
-        await ctx.send(f'You should try playing {game["name"]} on {platform_name}.')
-    else:
-        await ctx.send(f'Could not find a platform for {game["name"]}.')
+    # Checks if there are any common games
+    if len(common_games) == 0:
+        await ctx.send("There are no common games in the libraries of these two users.")
+        return
+
+    # Selects a random game from the list of common games
+    random_game = random.choice(list(common_games))
+
+    # Converts the set of common games to a string for display
+    common_games_str = "\n".join(common_games)
+
+    # Sends the list of common games as a message to the channel
+    await ctx.send("Common games:\n" + common_games_str)
+
+    # Sends the random game as a message to the channel
+    await ctx.send(f"You guys should play {random_game}!")
 
 bot.run(TOKEN)
