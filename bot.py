@@ -49,12 +49,12 @@ async def on_ready():
 async def on_member_join(member):
     # Change ID to whatever channel is the welcome channel
     channel = bot.get_channel(1101910949235007521)
-    await channel.send(f'Hi {member.name}, use !assist for commands and !game for a random game recommendation!')
+    await channel.send(f'Hi {member.name}, use !assist for commands and !compare for a random game recommendation!')
 
 # Command for telling users how to use the bot when joining
 @bot.command()
 async def assist(ctx):
-    await ctx.channel.send(f'Use !game for a random game recommendation!')
+    await ctx.channel.send(f'Use !compare steam_id_1 steam_id_2 to compare games!')
 
 # Command to compare steam libraries
 # !compare steam_id_1 steam_id_2
