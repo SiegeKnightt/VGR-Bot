@@ -48,7 +48,7 @@ async def on_ready():
 @bot.event
 async def on_member_join(member):
     # Change ID to whatever channel is the welcome channel
-    channel = bot.get_channel(1101910949235007521)
+    channel = bot.get_channel(yourchannelnumberhere)
     await channel.send(f'Hi {member.name}, use !assist for commands and !compare for a random game recommendation!')
 
 # Command for telling users how to use the bot when joining
