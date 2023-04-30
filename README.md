@@ -11,12 +11,12 @@ The goal of this project was to better understand how to implement API's and cre
  
  NOTE: To find your steam id, go to your steam profile and look at the link. You must have a custom URL set for this to work.
  
+ Example: https://steamcommunity.com/id/yoursteamid
+ 
   ### How To Get A Custom Steam URL
   - Login to Steam's website.
   - Click on your display name in the top-right of the screen and then select View Profile from the dropdown menu.
   - On the right-hand side of the screen, click Edit Profile.
   - In the Custom URL field, type out your custom URL.
   - Scroll down to the bottom of the page and click Save.
- 
- Example: https://steamcommunity.com/id/yoursteamid
  
