@@ -3,8 +3,8 @@ VGR Bot (Video Game Recommendation Bot)
 Author: Reeves Farrell
 
 Description:
-- Discord bot to give a random video game recommendation
-- Utilizes the Discord API and RAWG.io database API
+- Discord bot to give a random video game recommendation based on two users steam libraries
+- Utilizes the Discord API and Steam API
 - Goal was to better understand API's
 """
 
