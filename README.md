@@ -9,4 +9,5 @@ The bot will compare two player's steam libraries and then lists the games they 
  - Run the bot with py bot.py
  - Use !compare steam_id_1 steam_id_2
  NOTE: To find your steam id, go to your steam profile and look at the link
+ 
  Example: https://steamcommunity.com/id/yoursteamid
