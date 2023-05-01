@@ -14,9 +14,9 @@ The goal of this project was to better understand how to implement API's and cre
  Example: https://steamcommunity.com/id/yoursteamid
  
   ### How To Get A Custom Steam URL
-  - Login to Steam's website.
-  - Click on your display name in the top-right of the screen and then select View Profile from the dropdown menu.
-  - On the right-hand side of the screen, click Edit Profile.
-  - In the Custom URL field, type out your custom URL.
-  - Scroll down to the bottom of the page and click Save.
+  - Login to Steam's website
+  - Click on your display name in the top-right of the screen and then select View Profile from the dropdown menu
+  - On the right-hand side of the screen, click Edit Profile
+  - In the Custom URL field, type out your custom URL
+  - Scroll down to the bottom of the page and click Save
  
